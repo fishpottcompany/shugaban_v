@@ -2428,11 +2428,8 @@ pre code {
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
-  background-color: #fff;
   background-clip: padding-box;
-  border: 0.0625rem solid #d0d0d2;
   border-radius: 0.3125rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2452,9 +2449,7 @@ pre code {
 }
 
 .form-control:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: rgba(36, 186, 239, 0.4);
+  color: #fff;
   outline: 0;
   box-shadow: 0 0 10px rgba(36, 186, 239, 0.1);
 }
@@ -2980,6 +2975,42 @@ fieldset:disabled a.btn {
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(69, 196, 241, 0.5);
+}
+
+.btn-shugaban {
+  color: #000;
+  background-color: #e1ae05;
+  border-color: #e1ae05;
+}
+.btn-shugaban:hover {
+  color: #000;
+  background-color: #e1ae05e3;
+  border-color: #ca9c05;
+}
+
+.btn-shugaban:focus, .btn-shugaban.focus {
+  color: #000;
+  background-color: #e1ae05;
+  border-color: #ca9c05;
+  box-shadow: 0 0 0 0.2rem rgba(241, 209, 69, 0.5);
+}
+
+.btn-shugaban.disabled, .btn-shugaban:disabled {
+  color: #000;
+  background-color: #efc024;
+  border-color: #efb924;
+}
+
+.btn-shugaban:not(:disabled):not(.disabled):active, .btn-shugaban:not(:disabled):not(.disabled).active,
+.show > .btn-shugaban.dropdown-toggle {
+  color: #000;
+  background-color: #ca9c05;
+  border-color: #efb924;
+}
+
+.btn-shugaban:not(:disabled):not(.disabled):active:focus, .btn-shugaban:not(:disabled):not(.disabled).active:focus,
+.show > .btn-shugaban.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(241, 209, 69, 0.5);
 }
 
 .btn-secondary {
@@ -3544,6 +3575,37 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(222, 68, 55, 0.5);
 }
 
+.btn-outline-shugaban {
+  color: #e1ae05;
+  border-color: #e1ae05;
+}
+
+.btn-outline-shugaban:hover {
+  color: #000;
+  background-color: #e1ae05;
+  border-color: #e1ae05;
+}
+
+.btn-outline-shugaban:focus, .btn-outline-shugaban.focus {
+  box-shadow: 0 0 0 0.2rem rgba(241, 209, 69, 0.5);
+}
+
+.btn-outline-shugaban.disabled, .btn-outline-shugaban:disabled {
+  color: #e1ae05;
+  background-color: transparent;
+}
+
+.btn-outline-shugaban:not(:disabled):not(.disabled):active, .btn-outline-shugaban:not(:disabled):not(.disabled).active,
+.show > .btn-outline-shugaban.dropdown-toggle {
+  color: #e1ae05;
+  background-color: #e1ae05;
+  border-color: #e1ae05;
+}
+
+.btn-outline-shugaban:not(:disabled):not(.disabled):active:focus, .btn-outline-shugaban:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-shugaban.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(241, 209, 69, 0.5);
+}
 .btn-outline-light {
   color: #f7faff;
   border-color: #f7faff;
@@ -19762,7 +19824,8 @@ Header Default
 .header-section {
   position: relative;
   z-index: 1;
-  background-color: #fff;
+  background-color: #000;
+  color: #fff;
 }
 
 .header-section-divider {
@@ -19825,7 +19888,7 @@ Header Default
 }
 
 .nav-link {
-  color: #121a21;
+  color: #fff;
 }
 
 .nav-link-toggle {
@@ -25683,17 +25746,13 @@ Form
 
 .search-form-control {
   height: 2.375rem;
+  background-color: #262626;
 }
 
 @media (min-width: 1480px) {
   .search-form-control {
     min-width: 15.625rem !important;
   }
-}
-
-.search-form-control:focus {
-  box-shadow: 0 0 0 1px #24baef;
-  border-color: #24baef;
 }
 
 .vodi-select + .select2 .custom-select {
@@ -27050,6 +27109,14 @@ Navs
 
 .nav-meta__white a {
   color: #fff;
+}
+
+.nav-meta__yellow {
+  color: #e1ae05;
+}
+
+.nav-meta__yellow a {
+  color: #ca9c05;
 }
 
 @media (min-width: 768px) {
@@ -31698,11 +31765,21 @@ a:hover .text-hover-primary {
 }
 
 .h-w-primary {
-  color: #fff !important;
+  color: #e1ae05 !important;
 }
 
+
 .h-w-primary:hover {
-  color: #24baef !important;
+  color: #ca9c05 !important;
+}
+
+.h-w-primarydark {
+  color: #b98f03 !important;
+}
+
+
+.h-w-primarydark:hover {
+  color: #906f01 !important;
 }
 
 .h-g-primary {

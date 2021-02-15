@@ -1,33 +1,29 @@
 <?php
 
-class dbConnect {
+class DatabaseController {
 
 		private $mysqli;
 
- 
 		public function connectToDatabase($set_charset, $LIVE_MODE) {
 
 			if($LIVE_MODE === true){
-				// FISHPOTT LIVE MODE
-				$hosting = "localhost";
-				$user = "r3dph03n_y3nfish";
-				$db_connect_password = "g0tt6h6v31t";
-				$database = "r3dph03n_awafishpot";
+				// LIVE MODE
+				$hosting = "";
+				$user = "";
+				$db_connect_password = "";
+				$database = "";
 				//echo "\n LIVE MODE";
 			} else {
-				// FISHPOTT DEVELOPMENT MODE
+				// DEVELOPMENT MODE
 				$hosting = "localhost";
-				$user = "r3dph03n_fp_devu";
-				$db_connect_password = "g0d6ppr06ch";
-				$database = "r3dph03n_fp_devmode";
+				$user = "root";
+				$db_connect_password = "th3j0y";
+				$database = "genman_main";
 				//echo "\n DEVELOPMENT MODE";
 			}
 			
 			$mysqli = new mysqli($hosting, $user, $db_connect_password, $database);
 
-			if($set_charset == 1){
-				$mysqli->set_charset('utf8mb4');
-			}
 
 			/* check connection */
 			if ($mysqli->connect_errno) {
