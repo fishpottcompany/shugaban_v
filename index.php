@@ -432,13 +432,7 @@ include('assets/inc/header.php');
                 <div class="text-center tab-nav__v1">
                     <ul class="nav mb-7" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="pills-one-code-features-example2-tab-11" data-toggle="pill" href="#pills-one-code-features-example2-11" role="tab" aria-controls="pills-one-code-features-example2-11" aria-selected="true">Today</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-two-code-features-example2-tab-22" data-toggle="pill" href="#pills-two-code-features-example2-22" role="tab" aria-controls="pills-two-code-features-example2-22" aria-selected="false">This week</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-three-code-features-example2-tab-33" data-toggle="pill" href="#pills-three-code-features-example2-33" role="tab" aria-controls="pills-three-code-features-example2-33" aria-selected="false">Last 30 days</a>
+                            <a class="nav-link active" id="pills-one-code-features-example2-tab-11" data-toggle="pill" href="#pills-one-code-features-example2-11" role="tab" aria-controls="pills-one-code-features-example2-11" aria-selected="true">Action Drama</a>
                         </li>
                     </ul>
                 </div>
@@ -450,7 +444,7 @@ include('assets/inc/header.php');
                         <div class="row position-relative">
                             <div class="col-md-5 col-lg-4 col-xl-3 d-flex">
                                 <header class="max-w-370 mt-auto mb-8 title-dash">
-                                    <h3 class="text-white display-7 mb-3 font-weight-semi-bold">Romantic for Valentines Day</h3>
+                                    <h3 class="h-w-primary display-7 mb-3 font-weight-semi-bold">Action<br> Drama</h3>
                                     <div class="mt-11">
                                         <a href="../archive/movies.html" class="h-w-primary text-gray-1300 d-inline-flex align-items-center pt-2 font-secondary font-weight-medium font-size-13">VIEW ALL
                                             <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="4" height="7"><path d="M3.979,3.703 C3.987,3.785 3.966,3.869 3.903,3.934 L1.038,6.901 C0.921,7.023 0.724,7.029 0.598,6.916 L0.143,6.506 C0.017,6.393 0.011,6.203 0.128,6.082 L2.190,3.946 C2.276,3.829 2.356,3.691 2.356,3.548 C2.356,3.214 1.947,2.885 1.947,2.885 L1.963,2.877 L0.080,0.905 C-0.036,0.784 -0.029,0.592 0.095,0.479 L0.547,0.068 C0.671,-0.045 0.867,-0.039 0.983,0.083 L3.823,3.057 C3.867,3.102 3.876,3.161 3.885,3.218 C3.945,3.267 3.988,3.334 3.988,3.416 L3.988,3.681 C3.988,3.690 3.979,3.694 3.979,3.703 Z" fill="rgb(148, 156, 176)"/></svg>
@@ -476,404 +470,45 @@ include('assets/inc/header.php');
                                             }
                                         }]
                                     }'>
+
+                            <?php 
+                            $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, plot FROM " . MOVIES_TABLE . " WHERE category_id = ? ORDER BY created_at DESC LIMIT 6", 1, "i", array(20));
+                            if($query === false){
+                                $messageModelObject->error_exist = false;
+                                $messageModelObject->body = "Fetching last 5 movies failed";
+                            }
+                            
+                            // GETTING RESULTS
+                            $query_results_array = $queryController->getQueryResults($query, array("id", "name", "portrait", "year", "plot"), 1, 2);
+                            
+                            //BINDING THE RESULTS TO VARIABLES
+                            $query_results_array->bind_result($id, $name, $portrait, $year, $plot);
+
+                            // GETTING THE QUERY RESULTS INTO THE RESPONSE ARRAY
+                            while($query_results_array->fetch()){
+                                //echo "<br><br>Movie Name: " . $name;
+                                //echo "<br>Movie URL: " . $url;
+                                //echo "<br>Movie portrait: " . $portrait;
+                                //echo "<br>category_id: " . $category_id;
+                            ?>
                                     <div class="product">
                                         <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
+                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="<?php echo MOVIE_POSTER_PORTRAIT_FOLDER . $portrait; ?>" alt="Image Description"></a>
                                         </div>
                                         <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
+                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary"><?php echo $year; ?></a></span>
                                         </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
+                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html"><?php echo $name; ?></a></div>
                                     </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Bpm</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Sunday</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Fantastic Beasts and Where to Find Them</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Dirt</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Bpm</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Sunday</a></div>
-                                    </div>
+
+                            <?php 
+                                }
+                            ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="pills-two-code-features-example2-22" role="tabpanel" aria-labelledby="pills-two-code-features-example2-tab-22">
-                        <div class="row position-relative">
-                            <div class="col-md-5 col-lg-4 col-xl-3 d-flex">
-                                <header class="max-w-370 mt-auto mb-8 title-dash">
-                                    <h3 class="text-white display-7 mb-3 font-weight-semi-bold">Romantic for Valentines Day</h3>
-                                    <div class="mt-11">
-                                        <a href="../archive/movies.html" class="h-w-primary text-gray-1300 d-inline-flex align-items-center pt-2 font-secondary font-weight-medium font-size-13">VIEW ALL
-                                            <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="4" height="7"><path d="M3.979,3.703 C3.987,3.785 3.966,3.869 3.903,3.934 L1.038,6.901 C0.921,7.023 0.724,7.029 0.598,6.916 L0.143,6.506 C0.017,6.393 0.011,6.203 0.128,6.082 L2.190,3.946 C2.276,3.829 2.356,3.691 2.356,3.548 C2.356,3.214 1.947,2.885 1.947,2.885 L1.963,2.877 L0.080,0.905 C-0.036,0.784 -0.029,0.592 0.095,0.479 L0.547,0.068 C0.671,-0.045 0.867,-0.039 0.983,0.083 L3.823,3.057 C3.867,3.102 3.876,3.161 3.885,3.218 C3.945,3.267 3.988,3.334 3.988,3.416 L3.988,3.681 C3.988,3.690 3.979,3.694 3.979,3.703 Z" fill="rgb(148, 156, 176)"/></svg>
-                                        </a>
-                                    </div>
-                                </header>
-                            </div>
-                            <div class="col-md-7 col-lg-8 col-xl-9 position-static">
-                                <div class="js-slick-carousel slick slick-gutters-2 position-static"
-                                    data-hs-slick-carousel-options='{
-                                        "prevArrow": "<span class=\"fas fa-chevron-left dark slick-arrow slick-arrow-v1 left-position left slick-arrow-right rounded-circle position-absolute bottom-0\"></span>",
-                                        "nextArrow": "<span class=\"fas fa-chevron-right dark slick-arrow slick-arrow-v1 left-position right slick-arrow-right rounded-circle position-absolute\"></span>",
-                                        "slidesToShow": 6,
-                                        "responsive": [{
-                                            "breakpoint": 1199,
-                                            "settings": {
-                                                "slidesToShow": 3
-                                            }
-                                        }, {
-                                            "breakpoint": 768,
-                                            "settings": {
-                                                "slidesToShow": 1
-                                            }
-                                        }]
-                                    }'>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Dirt</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Bpm</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Sunday</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Bpm</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Sunday</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Fantastic Beasts and Where to Find Them</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="pills-three-code-features-example2-33" role="tabpanel" aria-labelledby="pills-three-code-features-example2-tab-33">
-                        <div class="row position-relative">
-                            <div class="col-md-5 col-lg-4 col-xl-3 d-flex">
-                                <header class="max-w-370 mt-auto mb-8 title-dash">
-                                    <h3 class="text-white display-7 mb-3 font-weight-semi-bold">Romantic for Valentines Day</h3>
-                                    <div class="mt-11">
-                                        <a href="../archive/movies.html" class="h-w-primary text-gray-1300 d-inline-flex align-items-center pt-2 font-secondary font-weight-medium font-size-13">VIEW ALL
-                                            <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="4" height="7"><path d="M3.979,3.703 C3.987,3.785 3.966,3.869 3.903,3.934 L1.038,6.901 C0.921,7.023 0.724,7.029 0.598,6.916 L0.143,6.506 C0.017,6.393 0.011,6.203 0.128,6.082 L2.190,3.946 C2.276,3.829 2.356,3.691 2.356,3.548 C2.356,3.214 1.947,2.885 1.947,2.885 L1.963,2.877 L0.080,0.905 C-0.036,0.784 -0.029,0.592 0.095,0.479 L0.547,0.068 C0.671,-0.045 0.867,-0.039 0.983,0.083 L3.823,3.057 C3.867,3.102 3.876,3.161 3.885,3.218 C3.945,3.267 3.988,3.334 3.988,3.416 L3.988,3.681 C3.988,3.690 3.979,3.694 3.979,3.703 Z" fill="rgb(148, 156, 176)"/></svg>
-                                        </a>
-                                    </div>
-                                </header>
-                            </div>
-                            <div class="col-md-7 col-lg-8 col-xl-9 position-static">
-                                <div class="js-slick-carousel slick slick-gutters-2 position-static"
-                                    data-hs-slick-carousel-options='{
-                                        "prevArrow": "<span class=\"fas fa-chevron-left dark slick-arrow slick-arrow-v1 left-position left slick-arrow-right rounded-circle position-absolute bottom-0\"></span>",
-                                        "nextArrow": "<span class=\"fas fa-chevron-right dark slick-arrow slick-arrow-v1 left-position right slick-arrow-right rounded-circle position-absolute\"></span>",
-                                        "slidesToShow": 6,
-                                        "responsive": [{
-                                            "breakpoint": 1199,
-                                            "settings": {
-                                                "slidesToShow": 3
-                                            }
-                                        }, {
-                                            "breakpoint": 768,
-                                            "settings": {
-                                                "slidesToShow": 1
-                                            }
-                                        }]
-                                    }'>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Bpm</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Sunday</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Fantastic Beasts and Where to Find Them</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Dirt</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">The Convenient Groom</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Bpm</a></div>
-                                    </div>
-                                    <div class="product">
-                                        <div class="product-image mb-2">
-                                            <a href="../single-movies/single-movies-v3.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="https://placehold.it/174x260" alt="Image Description"></a>
-                                        </div>
-                                        <div class="product-meta font-size-12 mb-1">
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">2020</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Action</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Comedy</a></span>
-                                            <span><a href="../single-movies/single-movies-v3.html" class="h-g-primary">Mystery</a></span>
-                                        </div>
-                                        <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v3.html">Sunday</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- End Tab Content -->
             </div>
