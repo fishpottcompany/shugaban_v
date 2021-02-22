@@ -33047,6 +33047,17 @@ a:hover .text-hover-primary {
   }
 }
 
+.input {
+  outline: 0;
+  background-color: transparent;
+  color: #fff;
+  border-width: 0 0 2px;
+  border-color: #fff
+}
+.input:focus {
+  border-color: #e1ae05
+}
+
 /*------------------------------------
   File for your custom SCSS style
 ------------------------------------*/
