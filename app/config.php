@@ -7,6 +7,10 @@ define("MOVIE_POSTER_FOLDER", "assets/img/covers/");
 define("MOVIE_POSTER_LANDSCAPES_FOLDER", "assets/img/landscapes/"); 
 define("MOVIE_POSTER_PORTRAIT_FOLDER", "assets/img/portrait/"); 
 
+
+// VIEWS TO SHOW THRESHOLD
+define("VIEWS_TO_SHOW_THRESHOLD", 100); 
+
 /*********************************** DB CREDENTIALS ************************************************/
 /*********************************** DB CREDENTIALS  ************************************************/
 /*********************************** DB CREDENTIALS  ************************************************/
@@ -21,11 +25,13 @@ define("DATABASE_NAME", "genman_main");
 /*********************************** TABLES ************************************************/
 
 define("MOVIES_TABLE", "movies"); 
+define("CATEGORIES_FOR_MOVIES_TABLE", "categories"); 
 
 
 /*********************************** DATABASE CHANGES START ************************************************
 
-- Added textfield "landscape_cover" to "movies" to table 
+- Added "text" field "landscape_cover" to "movies" to table 
+- Added "datetime" field "recommendation_date" to "movies" to table 
 
 *********************************** DATABASE CHANGES END ************************************************/
 
