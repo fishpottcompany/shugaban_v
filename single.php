@@ -67,7 +67,6 @@ if(!$error){
     //var_dump($query_results_array3);
 }
     
-$page_title = "Single";
 include('assets/inc/header.php');
 ?>
 
@@ -131,7 +130,7 @@ include('assets/inc/header.php');
                                                                 <i class="fas fa-eye h-w-primary font-size-42"></i>
                                                             </div>
                                                             <div class="text-lh-1 ml-1">
-                                                                <div class="h-w-primary font-size-24 font-weight-semi-bold"><?php echo $utilController->number_format_short($query_results_array2[8]); ?> </div>
+                                                                <div class="h-w-primary font-size-24 font-weight-semi-bold"><?php echo $utilController->number_format_short($query_results_array2[8]); ?></div>
                                                                 <span class="text-gray-1300 font-size-12">Views</span>
                                                             </div>
                                                         </div>

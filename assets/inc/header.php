@@ -33,7 +33,7 @@
             "fixMoment": 1000,
             "fixEffect": "slide"
         }'>
-        <div class="header-section shadow-soft">
+        <div class="header-section">
             <div id="logoAndNav" class="container-fluid px-md-5">
                 <!-- Nav -->
                 <nav class="js-mega-menu navbar navbar-expand-xl py-0 position-static justify-content-start">
@@ -93,7 +93,7 @@
                                     </div>
                                 </li>
                                 <li class="hs-has-mega-menu navbar-nav-item">
-                                    <a id="homeMegaMenu" class="hs-mega-menu-invoker nav-link font-secondary" href="javascript:;" aria-haspopup="false" aria-expanded="false"><b> Stream</b></a>
+                                    <a id="homeMegaMenu" class="hs-mega-menu-invoker nav-link font-secondary" href="javascript:;" aria-haspopup="false" aria-expanded="false"><b> Live Stream</b></a>
                                     <div class="hs-mega-menu dropdown-menu w-100" aria-labelledby="homeMegaMenu">
                                         
                                     </div>
