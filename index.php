@@ -370,7 +370,6 @@ include('assets/inc/header.php');
 
         <!-- featured-movie -->
         <?php
-        if(intval($category_id) > 0){
             $mysqli2 = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
             $query2 = $queryController->prepareAndExecuteQuery($mysqli2, "SELECT id, name, landscape_cover, year, category_id, plot FROM " . MOVIES_TABLE . " ORDER BY recommendation_date2 DESC LIMIT 1", 0, "", array());
             if($query2 === false){
@@ -387,7 +386,7 @@ include('assets/inc/header.php');
                 } else {
         ?>
         
-        <div class="bg-img-hero space-3" style="background-image: url(<?php echo MOVIE_POSTER_LANDSCAPES_FOLDER . $landscape_cover; ?>);">
+        <div class="bg-img-hero space-3" style="background-image: url(<?php echo MOVIE_POSTER_LANDSCAPES_FOLDER . $query_results_array2[2]; ?>);">
             <div class="container px-md-4">
                 <div class="row">
                     <div class="col-lg-6 col-xl-5">
@@ -422,7 +421,6 @@ include('assets/inc/header.php');
         <?php
                 }
             }
-        }
         ?>
 
         <!-- movies carousel aside header -->
