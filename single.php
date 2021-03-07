@@ -27,10 +27,11 @@ $utilController = new UtilController();
 
 $mysqli = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
 
-if(!$error){
+if(!$error && isset($_GET["s"]) && intval($_GET["s"]) > 0){
     // OTHER VARIABLE AND OBJECTS
     $mysqli2 = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
-    $query2 = $queryController->prepareAndExecuteQuery($mysqli2, "SELECT id, name, landscape_cover, year, category_id, plot, portrait, length, views FROM " . MOVIES_TABLE . " ORDER BY recommendation_date2 DESC LIMIT 1", 0, "", array());
+    $query2 = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, landscape_cover, year, category_id, plot, portrait FROM " . MOVIES_TABLE . " WHERE id = ? " . $added_condition . " ORDER by created_at DESC LIMIT 6", 1, "i", array($keyword));
+
     if($query2 === false){
         $messageModelObject->error_exist = false;
         $messageModelObject->body = "Failed getting category";

@@ -28,22 +28,22 @@ $last_created_at = "0";
 if(isset($_GET["pback"]) && trim($_GET["pback"]) != ""){
     $pback_first_created_at = trim($_GET["pback"]);
 }
-if(isset($_GET["s"]) && trim($_GET["s"]) != ""){
-    $nex_pg_keyword = "s=" . rawurlencode($_GET["s"])  . "&";
-    $keyword = "%" . trim($_GET["s"]) . "%";
+if(isset($_GET["s"]) && intval($_GET["s"]) > 0){
+    $nex_pg_keyword = "s=" . strval(intval($_GET["s"]))  . "&";
+    $keyword = strval(intval($_GET["s"]));
     if(isset($_GET["pll"]) && trim($_GET["pll"]) != ""){
         $max_created_at = trim($_GET["pll"]);
         $added_condition = " AND created_at <= ? ";
-        $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, category_id, plot, views, created_at FROM " . MOVIES_TABLE . " WHERE name LIKE ? " . $added_condition . " ORDER by created_at DESC LIMIT 6", 2, "ss", array($keyword, $max_created_at));
+        $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, category_id, plot, views, created_at FROM " . MOVIES_TABLE . " WHERE category_id = ? " . $added_condition . " ORDER by created_at DESC LIMIT 6", 2, "is", array($keyword, $max_created_at));
 
     } else {
         $max_created_at = "";
         $added_condition = "";
-        $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, category_id, plot, views, created_at FROM " . MOVIES_TABLE . " WHERE name LIKE ? " . $added_condition . " ORDER by created_at DESC LIMIT 6", 1, "s", array($keyword));
+        $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, category_id, plot, views, created_at FROM " . MOVIES_TABLE . " WHERE category_id = ? " . $added_condition . " ORDER by created_at DESC LIMIT 6", 1, "i", array($keyword));
     }
 } else {
     $nex_pg_keyword = "";
-    if(isset($_GET["pll"]) && trim($_GET["pll"]) != ""){
+    if(isset($_GET["pll"]) && intval($_GET["pll"]) != ""){
         $max_created_at = trim($_GET["pll"]);
         $added_condition = " WHERE created_at <= ?";
         $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, category_id, plot, views, created_at FROM " . MOVIES_TABLE . " " . $added_condition . "   ORDER by created_at DESC LIMIT 6", 1, "s", array($max_created_at));
@@ -123,7 +123,16 @@ include('assets/inc/header.php');
                                                 <div class="d-flex align-items-center" style="cursor: pointer;">
                                                     <!-- Checkboxes -->
                                                     <a class="custom-control custom-checkbox" href="cats?s=<?php echo $id ?>" style="cursor: pointer;">
-                                                      <label class="custom-control-label custom-control-label-custom" style="color: black; cursor: pointer;" for="action"><?php echo $name ?></label>
+                                                    
+                                                      <label class="custom-control-label custom-control-label-custom" style="color: black; cursor: pointer;" for="action">
+                                                      <?php if($keyword == $id){ ?>
+                                                       <b>
+                                                      <?php echo $name ?>
+                                                      </b>
+                                                      <?php } else { ?>
+                                                      <?php echo $name ?>
+                                                      <?php } ?>
+                                                    </label>
                                                     </a>
                                                 </div>
                                             </li>
@@ -218,10 +227,10 @@ include('assets/inc/header.php');
                                                                                                     <li class="mb-1">
                                                                                                         <div class="d-flex align-items-center">
                                                                                                             <!-- Checkboxes -->
-                                                                                                            <a class="custom-control custom-checkbox">
+                                                                                                            <div class="custom-control custom-checkbox">
                                                                                                               <input type="checkbox" class="custom-control-input" id="Action">
                                                                                                               <label class="custom-control-label custom-control-label-custom text-gray-1800" for="Action">Action</label>
-                                                                                                            </a>
+                                                                                                            </div>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                     <li class="mb-1">
