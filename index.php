@@ -25,7 +25,7 @@ $mysqli = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
 
 
 // CREATING PREPARED STATEMENT QUERY OBJECT
-$query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, cover, portrait, url FROM " . MOVIES_TABLE . " ORDER BY recommendation_date DESC LIMIT 4", 0, "", "");
+$query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, cover, portrait, url, category_id, year, length FROM " . MOVIES_TABLE . " ORDER BY recommendation_date DESC LIMIT 4", 0, "", "");
 if($query === false){
     $messageModelObject->error_exist = false;
     $messageModelObject->body = "Fetching last 3 movies failed";
@@ -33,7 +33,8 @@ if($query === false){
 }
 
 // GETTING RESULTS
-$query_results_array = $queryController->getQueryResults($query, array("id", "name", "cover", "portrait", "url"), 5, 2);
+$query_results_array = $queryController->getQueryResults($query, array("id", "name", "cover", "portrait", "url", "category_id", "year", "length"), 8, 2);
+
 
 
 $page_title = "Shugaban - Home Of Quality Nollywood Entertainment";
@@ -53,29 +54,47 @@ include('assets/inc/header.php');
                 }'>
                 <?php 
                 //BINDING THE RESULTS TO VARIABLES
-                $query_results_array->bind_result($id, $name, $cover, $portrait, $url);
+                $query_results_array->bind_result($id, $name, $cover, $portrait, $url, $category_id, $year, $length);
 
                 // GETTING THE QUERY RESULTS INTO THE RESPONSE ARRAY
                 while($query_results_array->fetch()){
                     //echo "<br><br>Movie Name: " . $name;
                     //echo "<br>Movie URL: " . $url;
                     //echo "<br>Movie portrait: " . $portrait;
+                    $mysqli3 = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
+                    $query3 = $queryController->prepareAndExecuteQuery($mysqli3, "SELECT name FROM " . CATEGORIES_FOR_MOVIES_TABLE . " WHERE id = ?", 1, "i", array($category_id));
+                    if($query3 === false){
+                        $messageModelObject->error_exist = false;
+                        $messageModelObject->body = "Failed getting category";
+                        $messageController->show_messge(ARE_WE_USING_LIVE_MODE, $messageModelObject, false);
+                        $error = true;
+                    } 
+                
+                    // GETTING-RESULTS
+                    $query_results_array3 = $queryController->getQueryResults($query3, array("name"), 1, 1);
+                
+                    if($query_results_array3 === false || (isset($query_results_array3[0]) && $query_results_array3[0] == "name")){
+                        $error = true;
+                    } 
+                    if($length == "N/A"){
+                        $length = "";
+                    }
                 ?>
 
                 <div  class="bg-img-hero d-flex align-items-center min-h-676rem slider-gradient" style="background-image: url(<?php echo MOVIE_POSTER_FOLDER . $cover ?>);">
                     <div class="container">
                         <div class="mx-3 mx-md-5  col-xl-5 px-0">
-                            <h1 class="display-3 mb-3"><a href="../single-movies/single-movies-v2.html" class="h-w-primary"><?php echo $name ?></a></h1>
+                            <h1 class="display-3 mb-3"><a href="single?s=<?php echo $id ?>" class="h-w-primary"><?php echo $name ?></a></h1>
                             <div class="mb-4d">
                                 <ul class="list-unstyled nav nav-meta nav-meta__yellow">
-                                    <li class="">2020</li>
-                                    <li class=""><a href="../single-movies/single-movies-v2.html">Comedy</a></li>
-                                    <li class="">1hr 55 mins</li>
+                                    <li class=""><?php echo $year ?></li>
+                                    <li class=""><a href="cats?s=<?php echo $category_id ?>"><?php echo $query_results_array3[0] ?></a></li>
+                                    <li class=""><?php echo $length ?></li>
                                 </ul>
                             </div>
                             <div class="d-md-flex">
-                                <a href="../single-movies/single-movies-v2.html" class="btn btn-shugaban px-6 py-3d btn-sm mb-3 mb-md-0">WATCH NOW</a>
-                                <a href="../single-movies/single-movies-v2.html" class="btn btn-outline-shugaban ml-md-4 px-6 py-3d btn-sm">PREVIEW</a>
+                                <a href="watch?s=<?php echo $id ?>" class="btn btn-shugaban px-6 py-3d btn-sm mb-3 mb-md-0">WATCH NOW</a>
+                                <a href="single?s=<?php echo $id ?>" class="btn btn-outline-shugaban ml-md-4 px-6 py-3d btn-sm">PREVIEW</a>
                             </div>
                         </div>
                     </div>
@@ -197,13 +216,13 @@ include('assets/inc/header.php');
                             <div class="col mb-5 mb-xl-0">
                                 <div class="product">
                                     <div class="product-image mb-2">
-                                        <a href="../single-movies/single-movies-v2.html" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="<?php echo MOVIE_POSTER_PORTRAIT_FOLDER . $portrait; ?>" alt="Image Description"></a>
+                                        <a href="single?s=<?php echo $id; ?>" class="d-inline-block position-relative stretched-link"><img class="img-fluid" src="<?php echo MOVIE_POSTER_PORTRAIT_FOLDER . $portrait; ?>" alt="Image Description"></a>
                                     </div>
                                     <div class="product-meta font-size-12 mb-1">
-                                        <span><a href="../single-movies/single-movies-v2.html" class="h-g-primary"><?php echo $year; ?></a></span>
-                                        <span><a href="../single-movies/single-movies-v2.html" class="h-g-primary"><?php echo $category_name; ?></a></span>
+                                        <span><span href="#" class="h-g-primary"><?php echo $year; ?></span></span>
+                                        <span><a href="cats?s=<?php echo $category_id; ?>" class="h-g-primary"><?php echo $category_name; ?></a></span>
                                     </div>
-                                    <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v2.html"><?php echo $name; ?></a></div>
+                                    <div class="product-title font-weight-bold font-size-1"><a href="single?s=<?php echo $id; ?>"><?php echo $name; ?></a></div>
                                 </div>
                             </div>
                             <?php }
@@ -219,16 +238,16 @@ include('assets/inc/header.php');
                             <div class="col-6 col-xl mb-5 mb-xl-0">
                                 <div class="product">
                                     <div class="product-image mb-2">
-                                        <a href="../single-movies/single-movies-v2.html" class="d-inline-block position-relative stretched-link">
+                                        <a href="single?s=<?php echo $id; ?>" class="d-inline-block position-relative stretched-link">
                                             <span class="position-absolute px-2d line-height-lg bg-primary rounded content-centered-x z-index-2 mt-n2 text-white font-size-12">Featured</span>
                                             <img class="img-fluid" src="<?php echo MOVIE_POSTER_PORTRAIT_FOLDER . $portrait; ?>" alt="Image Description">
                                         </a>
                                     </div>
                                     <div class="product-meta font-size-12 mb-1">
-                                        <span><a href="../single-movies/single-movies-v2.html" class="h-g-primary"><?php echo $year; ?></a></span>
-                                        <span><a href="../single-movies/single-movies-v2.html" class="h-g-primary"><?php echo $category_name; ?></a></span>
+                                        <span><span href="#" class="h-g-primary"><?php echo $year; ?></span></span>
+                                        <span><a href="cats?s=<?php echo $category_id; ?>"" class="h-g-primary"><?php echo $category_name; ?></a></span>
                                     </div>
-                                    <div class="product-title font-weight-bold font-size-1"><a href="../single-movies/single-movies-v2.html"><?php echo $name; ?></a></div>
+                                    <div class="product-title font-weight-bold font-size-1"><a href="single?s=<?php echo $id; ?>"><?php echo $name; ?></a></div>
                                 </div>
                             </div>
                             
@@ -241,9 +260,9 @@ include('assets/inc/header.php');
                 </div>
             </div>
             <div class="space-1 position-relative d-flex">
-                <button class="btn btn-shugaban mx-auto px-7 py-3 font-size-1 z-index-2 font-weight-medium font-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    + View more
-                </button>
+                <a href="pop" class="btn btn-shugaban mx-auto px-7 py-3 font-size-1 z-index-2 font-weight-medium font-secondary">
+                    View more
+                </a>
                 <div class="border-top content-centered w-100 border-gray-1400"></div>
             </div>
         </section>

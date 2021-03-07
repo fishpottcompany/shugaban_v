@@ -1,6 +1,7 @@
 <?php 
-if(isset($_GET["v"]) && intval($_GET["v"]) > 0){
+if(isset($_GET["s"]) && intval($_GET["s"]) > 0){
     $video_id = intval($_GET["v"]);
+    $error = false;
 } else {
     $error = true;
 }
@@ -27,10 +28,11 @@ $utilController = new UtilController();
 
 $mysqli = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
 
+$single_category_id = 20;
 if(!$error && isset($_GET["s"]) && intval($_GET["s"]) > 0){
-    // OTHER VARIABLE AND OBJECTS
+    $keyword = strval(intval($_GET["s"]));
     $mysqli2 = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
-    $query2 = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, landscape_cover, year, category_id, plot, portrait FROM " . MOVIES_TABLE . " WHERE id = ? " . $added_condition . " ORDER by created_at DESC LIMIT 6", 1, "i", array($keyword));
+    $query2 = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, landscape_cover, year, category_id, plot, portrait, length, views, trailer FROM " . MOVIES_TABLE . " WHERE id = ?", 1, "i", array($keyword));
 
     if($query2 === false){
         $messageModelObject->error_exist = false;
@@ -40,12 +42,14 @@ if(!$error && isset($_GET["s"]) && intval($_GET["s"]) > 0){
     } 
 
     // GETTING-RESULTS
-    $query_results_array2 = $queryController->getQueryResults($query2, array("id", "name", "landscape_cover", "year", "category_id", "plot", "portrait", "length", "views"), 9, 1);
+    $query_results_array2 = $queryController->getQueryResults($query2, array("id", "name", "landscape_cover", "year", "category_id", "plot", "portrait", "length", "views", "trailer"), 10, 1);
 
     if($query_results_array2 === false || (isset($query_results_array2[0]) && $query_results_array2[0] == "id")){
         $error = true;
     } 
     
+    //echo "query_results_array2[4]: " . $query_results_array2[4];
+    $single_category_id = $query_results_array2[4];
     if(!$error){
         $mysqli3 = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
         $query3 = $queryController->prepareAndExecuteQuery($mysqli3, "SELECT name FROM " . CATEGORIES_FOR_MOVIES_TABLE . " WHERE id = ?", 1, "i", array($query_results_array2[4]));
@@ -77,41 +81,39 @@ include('assets/inc/header.php');
         <div class="bg-black-1 pb-5 pb-lg-10">
             <div class="container px-md-6 mb-2">
                 <br>
+                <?php if(!$error){ ?>
                 <div class="row">
                     <div class="col-lg mb-5 mb-lg-0">
                         <div id="fancyboxGallery">
                             <div>
                                 <div>
                                     <div class="position-relative min-h-270rem mb-2d mr-xl-3">
-                                        <iframe class="position-absolute w-100 h-lg-down-100 position-xl-relative top-0 bottom-0 border-0" height="620" src="https://www.youtube.com/embed/uFxwkToatSg" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <?php if(trim($query_results_array2[9]) != ""){ ?>
+                                            <iframe class="position-absolute w-100 h-lg-down-100 position-xl-relative top-0 bottom-0 border-0" height="420" src="<?php echo $query_results_array2[9]; ?>" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <?php } else { ?>
+                                            
+                                            <div class="bg-img-hero space-3" style="background-image: url(<?php echo MOVIE_POSTER_LANDSCAPES_FOLDER . $query_results_array2[2]; ?>);">
+                                                <div class="container px-md-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-xl-12 d-none d-lg-flex align-items-center justify-content-center">
+                                                            <div class="">
+                                                                <!-- Video -->
+                                                                <a class="js-fancybox btn btn-play d-flex align-items-center justify-content-center rounded-circle" href="javascript:;">
+                                                                    <i class="fas fa-play text-primary"></i>
+                                                                </a>
+                                                                <!-- End Video -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div class="pl-2 max-w-35rem">
-                            <div class="mb-5">
-                                <img class="img-fluid" src="<?php echo MOVIE_POSTER_PORTRAIT_FOLDER . $query_results_array2[6]; ?>" alt="Image-Description">
-                            </div>
 
-                            <div class="mb-12" style="width: 100%;">
-                                <a href="../single-movies/single-movies-v2.html"  style="width: 100%;" class="btn btn-shugaban px-6 py-3d btn-sm mb-3 mb-md-0">RENT</a>
-                                <br><br>
-                                <a href="../single-movies/single-movies-v2.html"  style="width: 100%;" class="btn btn-outline-shugaban px-6 py-3d btn-sm mb-3 mb-md-0">BUY</a>
-                            </div>
-                            <div class="mb-5" style="width: 100%;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg mb-12 mb-lg-0">
-                        <div id="fancyboxGallery">
-                            <div>
-                                <div>
-                                    <div class="mb-7 pb-1">
+                        <div class="mb-7 pb-1">
                                         <div class="d-md-flex align-items-center justify-content-between mb-1">
                                             <div>
                                                 <h6 class="font-size-24 h-w-primary font-weight-semi-bold font-secondary mb-3 mb-md-1"><?php echo $query_results_array2[1]; ?></h6>
@@ -139,7 +141,36 @@ include('assets/inc/header.php');
                                             </div>
                                         </div>
                                     </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="pl-2 max-w-35rem">
+
+                        <?php if(trim($query_results_array2[9]) != ""){ ?>
+                            <div class="mb-5">
+                                <img class="img-fluid" src="<?php echo MOVIE_POSTER_PORTRAIT_FOLDER . $query_results_array2[6]; ?>" alt="Image-Description">
+                            </div>
+                        <?php } ?>
+
+                            <div class="mb-12" style="width: 100%;">
+                                <a href="../single-movies/single-movies-v2.html"  style="width: 100%;" class="btn btn-shugaban px-6 py-3d btn-sm mb-3 mb-md-0">RENT</a>
+                                <br><br>
+                                <a href="../single-movies/single-movies-v2.html"  style="width: 100%;" class="btn btn-outline-shugaban px-6 py-3d btn-sm mb-3 mb-md-0">BUY</a>
+                            </div>
+                            <div class="mb-5" style="width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        <?php } ?>
+
+                <div class="row">
+                    <div class="col-lg mb-12 mb-lg-0">
+                        <div id="fancyboxGallery">
+                            <div>
+                                <div>
                                     <div class="mb-7">
+
+                        <?php if(!$error){ ?>
                                         <div class="tab-nav__v10 mb-6">
                                             <ul class="nav overflow-auto overflow-md-hidden flex-nowrap flex-md-nowrap justify-content-md-center border-bottom border-gray-5300" role="tablist">
                                                 <li class="nav-item">
@@ -147,6 +178,7 @@ include('assets/inc/header.php');
                                                 </li>
                                             </ul>
                                         </div>
+                        <?php } ?>
                                         <div class="tab-content">
                                             <div class="tab-pane fade show active" id="pills-one-code-features-example2" role="tabpanel" aria-labelledby="pills-one-code-features-example2-tab">
                                                 <p class="text-gray-1300 mb-0 line-clamp-2 line-height-lg"><?php echo $query_results_array2[5]; ?></p>
@@ -265,7 +297,11 @@ include('assets/inc/header.php');
                                             <div class="row mx-n2d row-cols-1 row-cols-md-2 row-cols-xl-4">
 
                             <?php 
-                            $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, plot FROM " . MOVIES_TABLE . " WHERE category_id = ? ORDER BY created_at DESC LIMIT 4", 1, "i", array($query_results_array2[4]));
+
+                            //echo "single_category_id: " . $single_category_id;
+
+                            $mysqli = new mysqli(HOST, USER, USER_PASSWORD, DATABASE_NAME);
+                            $query = $queryController->prepareAndExecuteQuery($mysqli, "SELECT id, name, portrait, year, plot FROM " . MOVIES_TABLE . " WHERE category_id = ? ORDER BY created_at DESC LIMIT 4", 1, "i", array($single_category_id));
                             if($query === false){
                                 $messageModelObject->error_exist = false;
                                 $messageModelObject->body = "Fetching last 5 movies failed";
