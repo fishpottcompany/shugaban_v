@@ -52,7 +52,7 @@
   </div>
 </br>
 
-## Author
+### Author
 
 * **Dankyi Anno Kwaku**
 
