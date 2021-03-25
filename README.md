@@ -1,5 +1,5 @@
 # SHUGABAN - Online Movie and Rentals(Admin and Vendor Portals) 
-**Rewarding MTN Telecom customers for their loyalty**
+**Rent or Buy Movies, and watch online**
 
 ## Features
 * Rent movies
