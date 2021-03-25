@@ -1,4 +1,4 @@
-# SHUGABAN - Online Movie and Rentals
+# SHUGABAN - Online Movie and Rentals(Web Version) 
 **Rent or Buy Movies, and watch online**
 
 ## Features
