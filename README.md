@@ -51,7 +51,8 @@
 </table>
   </div>
 </br>
-## Authors
+
+## Author
 
 * **Dankyi Anno Kwaku**
 
